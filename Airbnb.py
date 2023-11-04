@@ -1,9 +1,5 @@
 import pandas as pd
 import pymongo
-import mysql.connector
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy import text
 
 import os
 from dotenv import load_dotenv
@@ -163,79 +159,8 @@ df = pd.merge(df, df_amenities, on='_id')
 
 # print(df)
 
+
+#Save csv file
+
 #df.to_csv('airbnb_excel.csv')
 
-#Connect to sql
-
-mydb= mysql.connector.connect(
-    host='localhost',
-    user='root',
-    port='3306',
-    password=os.getenv("MYSQLKEY"),
-    database='Airbnb',
-    auth_plugin = "mysql_native_password"
-
-)
-
-cursor=mydb.cursor()
-
-
-
-engine = create_engine(os.getenv("MYSQLSRC"), echo=False)
-
-# connect to sql
-
-df.to_sql('airbnb_db',engine,if_exists='replace',index=False,
-                     dtype={"_id" : sqlalchemy.types.VARCHAR(length=100),
-                            "listing_url": sqlalchemy.types.TEXT,
-                            "name" : sqlalchemy.types.VARCHAR(length=200),
-                            "property_type" : sqlalchemy.types.VARCHAR(length=255),
-                            "room_type" : sqlalchemy.types.VARCHAR(length=255),
-                            "bed_type" : sqlalchemy.types.VARCHAR(length=255),
-                            "minimum_nights" : sqlalchemy.types.Integer,
-                            "maximum_nights" : sqlalchemy.types.Integer,
-                            "cancellation_policy" : sqlalchemy.types.VARCHAR(length=255),
-                            "accommodates" : sqlalchemy.types.Integer,
-                            "bedrooms" : sqlalchemy.types.Integer,
-                            "beds" : sqlalchemy.types.Integer,
-                            "number_of_reviews" : sqlalchemy.types.Integer,
-                            "bathrooms" : sqlalchemy.types.FLOAT,
-                            "price" : sqlalchemy.types.Integer,
-                            "extra_people" : sqlalchemy.types.Integer,
-                            "guests_included" : sqlalchemy.types.Integer,
-                            "images": sqlalchemy.types.TEXT,
-                            "review_scores" : sqlalchemy.types.Integer,
-                            "cleaning_fee" : sqlalchemy.types.VARCHAR(length=20),
-                            "host_id" : sqlalchemy.types.VARCHAR(length=255),
-                            "host_url": sqlalchemy.types.TEXT,
-                            "host_name" : sqlalchemy.types.VARCHAR(length=255),
-                            "host_location" : sqlalchemy.types.VARCHAR(length=255),
-                            "host_thumbnail_url": sqlalchemy.types.TEXT,
-                            "host_picture_url": sqlalchemy.types.TEXT,
-                            "host_neighbourhood" : sqlalchemy.types.VARCHAR(length=255),
-                            "host_is_superhost" : sqlalchemy.types.VARCHAR(length=50),
-                            "host_has_profile_pic" : sqlalchemy.types.VARCHAR(length=50),
-                            "host_identity_verified" : sqlalchemy.types.VARCHAR(length=50),
-                            "host_listings_count" : sqlalchemy.types.Integer,
-                            "host_total_listings_count" : sqlalchemy.types.Integer,
-                            "host_verification": sqlalchemy.types.TEXT,
-                            "street" : sqlalchemy.types.VARCHAR(length=255),
-                            "suburb" : sqlalchemy.types.VARCHAR(length=255),
-                            "government_area" : sqlalchemy.types.VARCHAR(length=255),
-                            "market" : sqlalchemy.types.VARCHAR(length=255),
-                            "country" : sqlalchemy.types.VARCHAR(length=255),
-                            "country_code" : sqlalchemy.types.VARCHAR(length=255),
-                            "location_type" : sqlalchemy.types.VARCHAR(length=255),
-                            "longitude" : sqlalchemy.types.FLOAT,
-                            "latitude" : sqlalchemy.types.FLOAT,
-                            "is_location_exact" : sqlalchemy.types.VARCHAR(length=255),
-                            "availability_30" : sqlalchemy.types.Integer,
-                            "availability_60" : sqlalchemy.types.Integer,
-                            "availability_90" : sqlalchemy.types.Integer,
-                            "availability_365" : sqlalchemy.types.Integer,
-                            'amenities': sqlalchemy.types.TEXT})
-
-# Close the cursor and database connection
-
-cursor.close()
-mydb.close()
